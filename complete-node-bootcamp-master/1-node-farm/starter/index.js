@@ -2,6 +2,7 @@
 // ! Modules
 const fs = require("fs");
 const http = require("http");
+const url = require("url");
 
 // * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * Reading and Writing files - Synchronously
@@ -40,10 +41,22 @@ console.log("Will read file...");
 
 // * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * Creating a Simple Web Server
+// * Routing
 
 const server = http.createServer((req, res) => {
-  console.log(req);
-  res.end("Hello from the server!");
+  const pathName = req.url;
+
+  if (pathName === "/" || pathName === "/overview") {
+    res.end("This is the OVERVIEW");
+  } else if (pathName === "/product") {
+    res.end("This is the PRODUCT");
+  } else {
+    res.writeHead(404, {
+      "Content-type": "text/html", // Se le dice al servidor que espere recibir contenido en texto o html
+      "my-own-header": "Hello World",
+    });
+    res.end("<h1>Page not found!</h1>");
+  }
 }); // Request and Response variables -- Each time a new request to the server will have this response
 
 server.listen(8000, "127.0.0.1", () => {
