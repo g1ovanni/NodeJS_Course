@@ -42,14 +42,25 @@ console.log("Will read file...");
 // * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * Creating a Simple Web Server
 // * Routing
+// * Building a (Very) Simple API
 
+// ? Building the API
+// Executed once at the start
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8"); // Read the data from the JSON file
+const dataObject = JSON.parse(data); // Parse the JSON file to an object
+
+// ? Creating the server
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
+  // ? Routing
   if (pathName === "/" || pathName === "/overview") {
     res.end("This is the OVERVIEW");
   } else if (pathName === "/product") {
     res.end("This is the PRODUCT");
+  } else if (pathName === "/api") {
+    res.writeHead(200, { "Content-type": "application/json" });
+    res.end(data);
   } else {
     res.writeHead(404, {
       "Content-type": "text/html", // Se le dice al servidor que espere recibir contenido en texto o html
@@ -62,3 +73,6 @@ const server = http.createServer((req, res) => {
 server.listen(8000, "127.0.0.1", () => {
   console.log("Listening to requests on port 8000");
 });
+
+// * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * Building a (Very) Simple API
