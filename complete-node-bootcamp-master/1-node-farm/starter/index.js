@@ -1,4 +1,7 @@
+// ! //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ! Modules
 const fs = require("fs");
+const http = require("http");
 
 // * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * Reading and Writing files - Synchronously
@@ -11,10 +14,12 @@ console.log(textIn);
 const textOut = `This is what we know about avocado: ${textIn}.\nCreated on ${Date.now()}`;
 fs.writeFileSync("./txt/output.txt", textOut);
 console.log("File written!");
+
 */
 
 // * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * Reading and Writing files - Asynchronously
+/*
 
 // Is Non-blocking, synchronous way
 fs.readFile("./txt/start.txt", "utf-8", (err, data1) => {
@@ -30,3 +35,17 @@ fs.readFile("./txt/start.txt", "utf-8", (err, data1) => {
   });
 }); // The third parameter is the call-back function, which will execute once the file reading in the first parameter is ready
 console.log("Will read file...");
+
+*/
+
+// * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * Creating a Simple Web Server
+
+const server = http.createServer((req, res) => {
+  console.log(req);
+  res.end("Hello from the server!");
+}); // Request and Response variables -- Each time a new request to the server will have this response
+
+server.listen(8000, "127.0.0.1", () => {
+  console.log("Listening to requests on port 8000");
+});
