@@ -3,6 +3,8 @@
 const fs = require("fs");
 const http = require("http");
 const url = require("url");
+// Third party modules
+const slugify = require("slugify");
 
 // * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * Reading and Writing files - Synchronously
@@ -81,6 +83,10 @@ const tempProduct = fs.readFileSync(
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8"); // Read the data from the JSON file
 const dataObject = JSON.parse(data); // Parse the JSON file to an object
+
+// console.log(slugify("Fresh Avocados", { lower: true }));
+const slugs = dataObject.map((el) => slugify(el.productName, { lower: true }));
+console.log(slugs);
 
 // ? Creating the server
 const server = http.createServer((req, res) => {
