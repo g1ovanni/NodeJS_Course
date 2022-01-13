@@ -84,11 +84,12 @@ const dataObject = JSON.parse(data); // Parse the JSON file to an object
 
 // ? Creating the server
 const server = http.createServer((req, res) => {
+  const { query, pathname } = url.parse(req.url, true);
   const pathName = req.url;
 
   // ? Routing
   // Overview page
-  if (pathName === "/" || pathName === "/overview") {
+  if (pathname === "/" || pathname === "/overview") {
     res.writeHead(200, { "Content-type": "text/html" });
 
     const cardsHtml = dataObject
@@ -100,11 +101,11 @@ const server = http.createServer((req, res) => {
     res.end(output);
   }
   // Product page
-  else if (pathName === "/product") {
+  else if (pathname === "/product") {
     res.end("This is the PRODUCT");
   }
   // API
-  else if (pathName === "/api") {
+  else if (pathname === "/api") {
     res.writeHead(200, { "Content-type": "application/json" });
     res.end(data);
   }
