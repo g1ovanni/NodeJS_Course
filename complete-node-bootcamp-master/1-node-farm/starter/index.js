@@ -1,10 +1,10 @@
 // ! //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ! Modules
-const fs = require("fs");
-const http = require("http");
-const url = require("url");
+const fs = require('fs');
+const http = require('http');
+const url = require('url');
 // Third party modules
-const slugify = require("slugify");
+const slugify = require('slugify');
 
 // * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * Reading and Writing files - Synchronously
@@ -63,25 +63,25 @@ const replaceTemplate = (temp, product) => {
   output = output.replace(/{%ID%}/g, product.id);
 
   if (!product.organic)
-    output = output.replace(/{%NOT_ORGANIC%}/g, "not-organic");
+    output = output.replace(/{%NOT_ORGANIC%}/g, 'not-organic');
 
   return output;
 };
 
 const tempOverview = fs.readFileSync(
   `${__dirname}/templates/template-overview.html`,
-  "utf-8"
+  'utf-8'
 );
 const tempCard = fs.readFileSync(
   `${__dirname}/templates/template-card.html`,
-  "utf-8"
+  'utf-8'
 );
 const tempProduct = fs.readFileSync(
   `${__dirname}/templates/template-product.html`,
-  "utf-8"
+  'utf-8'
 );
 
-const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8"); // Read the data from the JSON file
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8'); // Read the data from the JSON file
 const dataObject = JSON.parse(data); // Parse the JSON file to an object
 
 // console.log(slugify("Fresh Avocados", { lower: true }));
@@ -95,38 +95,38 @@ const server = http.createServer((req, res) => {
 
   // ? Routing
   // Overview page
-  if (pathname === "/" || pathname === "/overview") {
-    res.writeHead(200, { "Content-type": "text/html" });
+  if (pathname === '/' || pathname === '/overview') {
+    res.writeHead(200, { 'Content-type': 'text/html' });
 
     const cardsHtml = dataObject
       .map((el) => replaceTemplate(tempCard, el))
-      .join("");
-    const output = tempOverview.replace("{%PRODUCT_CARDS%}", cardsHtml);
+      .join('');
+    const output = tempOverview.replace('{%PRODUCT_CARDS%}', cardsHtml);
     console.log(cardsHtml);
 
     res.end(output);
   }
   // Product page
-  else if (pathname === "/product") {
-    res.end("This is the PRODUCT");
+  else if (pathname === '/product') {
+    res.end('This is the PRODUCT');
   }
   // API
-  else if (pathname === "/api") {
-    res.writeHead(200, { "Content-type": "application/json" });
+  else if (pathname === '/api') {
+    res.writeHead(200, { 'Content-type': 'application/json' });
     res.end(data);
   }
   // Not found
   else {
     res.writeHead(404, {
-      "Content-type": "text/html", // Se le dice al servidor que espere recibir contenido en texto o html
-      "my-own-header": "Hello World",
+      'Content-type': 'text/html', // Se le dice al servidor que espere recibir contenido en texto o html
+      'my-own-header': 'Hello World',
     });
-    res.end("<h1>Page not found!</h1>");
+    res.end('<h1>Page not found!</h1>');
   }
 }); // Request and Response variables -- Each time a new request to the server will have this response
 
-server.listen(8000, "127.0.0.1", () => {
-  console.log("Listening to requests on port 8000");
+server.listen(8000, '127.0.0.1', () => {
+  console.log('Listening to requests on port 8000');
 });
 
 // * //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
